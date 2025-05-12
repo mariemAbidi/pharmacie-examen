@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des médicaments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        .btn-violet {
+            background-color: #6f42c1;
+            color: white;
+        }
+        .btn-violet:hover {
+            background-color: #5a32a3;
+            color: white;
+        }
+        /* Style pour la table alignée à gauche */
+        .table-left {
+            border: 2px solid #000 !important;
+            width: auto;
+            margin-right: auto;
+            margin-left: 0;
+        }
+        .table-left thead th {
+            border-bottom: 2px solid #000 !important;
+            background-color: #f8f9fa;
+        }
+        .table-left th,
+        .table-left td {
+            border: 1px solid #000 !important;
+            padding: 0.5rem 0.75rem;
+        }
+        /* Style pour réduire le formulaire de recherche */
+        .search-form {
+            max-width: 400px;
+        }
+        .search-form .form-control {
+            height: 32px;
+            font-size: 0.875rem;
+        }
+        .search-form .btn {
+            height: 32px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        /* Alignement général à gauche */
+        .left-aligned-container {
+            max-width: 100%;
+            margin: 0;
+            padding: 1rem;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="left-aligned-container mt-3">
+      
+        <h3>Ajouter un medicament : </h3>
+        <div class="mb-3">
+            <a th:href="@{/pharmacie/medicaments/ajouter}" class="btn btn-violet">Ajouter</a>
+        </div>
+<h3>Liste des médicaments : </h3>
+        <div class="table-responsive">
+            <table class="table table-striped table-left">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Quantité</th>
+                        <th>Prix</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="medicament : ${medicaments}">
+                        <td th:text="${medicament.id}"></td>
+                        <td th:text="${medicament.nom}"></td>
+                        <td th:text="${medicament.quantite}"></td>
+                        <td th:text="'$' + ${medicament.prix}"></td>
+                        <td>
+                            <form th:action="@{/pharmacie/medicaments/supprimer/{id}(id=${medicament.id})}" method="post" th:object="${medicament}">
+                                <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table><br>
+			
+			<h3>Rechercher un médicament :</h3>
+			<form th:action="@{/pharmacie/medicaments/rechercher}" method="get" class="mb-3 search-form">
+			        <div class="input-group">
+			            <input type="text" th:field="${searchForm.searchTerm}" class="form-control" placeholder="Le médicament...">
+			            <button type="submit" class="btn btn-secondary">Rechercher</button><br><br>
+			        </div>
+			    </form>
+				
+				
+        </div>
+    </div>
+</body>
+</html>
