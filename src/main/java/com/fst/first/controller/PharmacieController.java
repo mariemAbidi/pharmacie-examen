@@ -29,20 +29,20 @@ public class PharmacieController {
     public String listeMedicaments(Model model) {
         model.addAttribute("medicaments", medicamentRepository.findAll());
         model.addAttribute("searchForm", new SearchForm());
-        return "medicaments/liste";
+        return "medicaments/affiche";
     }
 
     @GetMapping("/medicaments/ajouter")
     public String showAddForm(Model model) {
         model.addAttribute("medicament", new Medicament());
-        return "medicaments/formulaire-ajout";
+        return "medicaments/ajout";
     }
 
     @PostMapping("/medicaments/ajouter")
     public String addMedicament(@ModelAttribute("medicament") Medicament medicament, 
                               BindingResult result) {
         if (result.hasErrors()) {
-            return "medicaments/formulaire-ajout";
+            return "medicaments/ajout";
         }
         medicamentRepository.save(medicament);
         return "redirect:/pharmacie/medicaments";
@@ -54,7 +54,7 @@ public class PharmacieController {
         List<Medicament> results = medicamentRepository
             .findByNomContainingIgnoreCase(searchForm.getSearchTerm());
         model.addAttribute("medicaments", results);
-        return "medicaments/liste";
+        return "medicaments/affiche";
     }
 
     @PostMapping("/medicaments/supprimer/{id}")
